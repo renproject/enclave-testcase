@@ -5,12 +5,13 @@ import (
 	"time"
 
 	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/renproject/multichain/api/utxo"
 	"github.com/renproject/multichain/chain/bitcoin"
 	"github.com/renproject/multichain/chain/bitcoincash"
+	"github.com/renproject/multichain/chain/cosmos"
 	"github.com/renproject/multichain/chain/digibyte"
 	"github.com/renproject/multichain/chain/dogecoin"
-	"github.com/renproject/multichain/api/utxo"
-
+	"github.com/renproject/multichain/chain/solana"
 	// "github.com/renproject/multichain/chain/filecoin"
 	"github.com/renproject/multichain/chain/zcash"
 )
@@ -35,7 +36,7 @@ func useBitcoin() {
 
 	tx, _ := txBuilder.BuildTx(nil, nil)
 
-	ctx, _ := context.WithTimeout(context.Background(), 0 * time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 0*time.Second)
 	client.LatestBlock(ctx)
 	client.Output(ctx, utxo.Outpoint{})
 	client.UnspentOutput(ctx, utxo.Outpoint{})
@@ -71,7 +72,10 @@ func useFilecoin() {
 	// filecoin.NewTxBuilder()
 }
 
-func useSolana() {}
+func useSolana() {
+	client := solana.NewClient(solana.DefaultClientOptions())
+	solana.NewTxBuilder(cosmos.DefaultTxBuilderOptions(), client)
+}
 
 func useSubstrate() {}
 
