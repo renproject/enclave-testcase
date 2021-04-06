@@ -1,7 +1,7 @@
 # Install
 Clone repo and submodules
 ```
-https://github.com/renproject/enclave-testcase.git
+git clone https://github.com/renproject/enclave-testcase.git
 cd enclave-testcase
 git submodule update --init --recursive
 ```
