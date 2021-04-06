@@ -8,11 +8,12 @@ import (
 	"github.com/renproject/multichain/api/utxo"
 	"github.com/renproject/multichain/chain/bitcoin"
 	"github.com/renproject/multichain/chain/bitcoincash"
-	"github.com/renproject/multichain/chain/cosmos"
+	// "github.com/renproject/multichain/chain/cosmos"
 	"github.com/renproject/multichain/chain/digibyte"
 	"github.com/renproject/multichain/chain/dogecoin"
 	"github.com/renproject/multichain/chain/solana"
-	// "github.com/renproject/multichain/chain/filecoin"
+	"github.com/renproject/multichain/chain/terra"
+	"github.com/renproject/multichain/chain/filecoin"
 	"github.com/renproject/multichain/chain/zcash"
 )
 
@@ -68,18 +69,20 @@ func useDogecoin() {
 func useEthereum() {}
 
 func useFilecoin() {
-	// filecoin.NewClient(filecoin.DefaultClientOptions())
-	// filecoin.NewTxBuilder()
+	filecoin.NewClient(filecoin.DefaultClientOptions())
+	filecoin.NewTxBuilder()
 }
 
 func useSolana() {
-	client := solana.NewClient(solana.DefaultClientOptions())
-	solana.NewTxBuilder(cosmos.DefaultTxBuilderOptions(), client)
+	solana.NewClient(solana.DefaultClientOptions())
 }
 
 func useSubstrate() {}
 
-func useTerra() {}
+func useTerra() {
+	client := terra.NewClient(terra.DefaultClientOptions())
+	terra.NewTxBuilder(terra.DefaultTxBuilderOptions(), client)
+}
 
 func useZcash() {
 	zcash.NewClient(zcash.DefaultClientOptions())
