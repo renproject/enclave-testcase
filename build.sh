@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 go get github.com/xlab/c-for-go
 
 cd ./extern/filecoin-ffi/ && make
