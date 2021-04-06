@@ -1,12 +1,17 @@
 package main
 
 import (
+	"context"
+	"time"
+
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/renproject/multichain/chain/bitcoin"
 	"github.com/renproject/multichain/chain/bitcoincash"
 	"github.com/renproject/multichain/chain/digibyte"
 	"github.com/renproject/multichain/chain/dogecoin"
-	"github.com/renproject/multichain/chain/filecoin"
+	"github.com/renproject/multichain/api/utxo"
+
+	// "github.com/renproject/multichain/chain/filecoin"
 	"github.com/renproject/multichain/chain/zcash"
 )
 
@@ -25,8 +30,21 @@ func main() {
 }
 
 func useBitcoin() {
-	bitcoin.NewClient(bitcoin.DefaultClientOptions())
-	bitcoin.NewTxBuilder(&chaincfg.RegressionNetParams)
+	client := bitcoin.NewClient(bitcoin.DefaultClientOptions())
+	txBuilder := bitcoin.NewTxBuilder(&chaincfg.RegressionNetParams)
+
+	tx, _ := txBuilder.BuildTx(nil, nil)
+
+	ctx, _ := context.WithTimeout(context.Background(), 0 * time.Second)
+	client.LatestBlock(ctx)
+	client.Output(ctx, utxo.Outpoint{})
+	client.UnspentOutput(ctx, utxo.Outpoint{})
+	client.SubmitTx(ctx, tx)
+	client.UnspentOutputs(ctx, 0, 0, "")
+	client.Confirmations(ctx, []byte{})
+	client.EstimateSmartFee(ctx, 0)
+	client.EstimateFeeLegacy(ctx, 0)
+
 }
 
 func useBitcoinCash() {
@@ -49,8 +67,8 @@ func useDogecoin() {
 func useEthereum() {}
 
 func useFilecoin() {
-	filecoin.NewClient(filecoin.DefaultClientOptions())
-	filecoin.NewTxBuilder()
+	// filecoin.NewClient(filecoin.DefaultClientOptions())
+	// filecoin.NewTxBuilder()
 }
 
 func useSolana() {}
