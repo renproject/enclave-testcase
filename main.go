@@ -12,14 +12,15 @@ import (
 	"github.com/renproject/multichain/api/utxo"
 	"github.com/renproject/multichain/chain/bitcoin"
 	"github.com/renproject/multichain/chain/bitcoincash"
+
 	// "github.com/renproject/multichain/chain/cosmos"
+	"github.com/renproject/enclave-testcase/ethereumbinding"
 	"github.com/renproject/multichain/chain/digibyte"
 	"github.com/renproject/multichain/chain/dogecoin"
 	"github.com/renproject/multichain/chain/filecoin"
 	"github.com/renproject/multichain/chain/solana"
 	"github.com/renproject/multichain/chain/terra"
 	"github.com/renproject/multichain/chain/zcash"
-	"github.com/renproject/enclave-testcase/ethereumbinding"
 )
 
 func main() {
@@ -72,7 +73,7 @@ func useDogecoin() {
 }
 
 func useEthereum() {
-	client, err := ethclient.Dial(string(chainOpts.RPC))
+	client, err := ethclient.Dial("")
 	if err != nil {
 		return
 	}
@@ -82,7 +83,9 @@ func useEthereum() {
 	}
 	gateways := make(map[multichain.Asset]*ethereumbinding.MintGatewayLogicV1, 0)
 	assetAddrs := make(map[multichain.Address]multichain.Asset, 0)
-	sourceChains := make(multichain.Chain, 0)
+	sourceChains := []multichain.Chain{
+		multichain.Bitcoin,
+	}
 	for _, chain := range sourceChains {
 		gatewayAddr, err := gatewayRegistry.GetGatewayBySymbol(&bind.CallOpts{}, string(chain.NativeAsset()))
 		if err != nil {
