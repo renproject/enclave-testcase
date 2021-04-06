@@ -8,13 +8,11 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/renproject/enclave-testcase/ethereumbinding"
 	"github.com/renproject/multichain"
 	"github.com/renproject/multichain/api/utxo"
 	"github.com/renproject/multichain/chain/bitcoin"
 	"github.com/renproject/multichain/chain/bitcoincash"
-
-	// "github.com/renproject/multichain/chain/cosmos"
-	"github.com/renproject/enclave-testcase/ethereumbinding"
 	"github.com/renproject/multichain/chain/digibyte"
 	"github.com/renproject/multichain/chain/dogecoin"
 	"github.com/renproject/multichain/chain/filecoin"
@@ -26,13 +24,11 @@ import (
 func main() {
 	useBitcoin()
 	useBitcoinCash()
-	// useCosmos()
 	useDigibyte()
 	useDogecoin()
 	useEthereum()
 	useFilecoin()
 	useSolana()
-	useSubstrate()
 	useTerra()
 	useZcash()
 }
@@ -43,7 +39,8 @@ func useBitcoin() {
 
 	tx, _ := txBuilder.BuildTx(nil, nil)
 
-	ctx, _ := context.WithTimeout(context.Background(), 0*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 0*time.Second)
+	defer cancel()
 	client.LatestBlock(ctx)
 	client.Output(ctx, utxo.Outpoint{})
 	client.UnspentOutput(ctx, utxo.Outpoint{})
@@ -59,8 +56,6 @@ func useBitcoinCash() {
 	bitcoincash.NewClient(bitcoincash.DefaultClientOptions())
 	bitcoincash.NewTxBuilder(&chaincfg.RegressionNetParams)
 }
-
-// func useCosmos() {}
 
 func useDigibyte() {
 	digibyte.NewClient(digibyte.DefaultClientOptions())
@@ -113,8 +108,6 @@ func useFilecoin() {
 func useSolana() {
 	solana.NewClient(solana.DefaultClientOptions())
 }
-
-func useSubstrate() {}
 
 func useTerra() {
 	client := terra.NewClient(terra.DefaultClientOptions())

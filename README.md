@@ -16,3 +16,4 @@ git submodule update --init --recursive
 - pkg-config
 - go
 - c-for-go
+- OpenCL (ocl-icd-opencl-dev on ubuntu)
